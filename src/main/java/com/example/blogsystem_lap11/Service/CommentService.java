@@ -3,9 +3,11 @@ package com.example.blogsystem_lap11.Service;
 
 import com.example.blogsystem_lap11.API.ApiException;
 import com.example.blogsystem_lap11.Model.Comment;
+import com.example.blogsystem_lap11.Model.Post;
 import com.example.blogsystem_lap11.Model.User;
 import com.example.blogsystem_lap11.Repository.CategoryRepository;
 import com.example.blogsystem_lap11.Repository.CommentRepository;
+import com.example.blogsystem_lap11.Repository.PostRepository;
 import com.example.blogsystem_lap11.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,16 +21,24 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
+    private final PostRepository postRepository;
+
     public List<Comment> getAllComment(){
        return commentRepository.findAll();
 
     }
 
     public void addComment(Comment comment) {
+      Post post=  postRepository.getPostByPostId(comment.getPost_id());
+        if(post==null) {
+            throw new ApiException("The Post Not found");
+        }
 
         commentRepository.save(comment);
+        }
 
-    }
+
+
 
 
 

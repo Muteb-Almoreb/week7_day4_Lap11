@@ -1,8 +1,10 @@
 package com.example.blogsystem_lap11.Service;
 
 import com.example.blogsystem_lap11.API.ApiException;
+import com.example.blogsystem_lap11.Model.Category;
 import com.example.blogsystem_lap11.Model.Post;
 import com.example.blogsystem_lap11.Model.User;
+import com.example.blogsystem_lap11.Repository.CategoryRepository;
 import com.example.blogsystem_lap11.Repository.PostRepository;
 import com.example.blogsystem_lap11.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final CategoryRepository categoryRepository;
 
     public List<Post> gelAllPost() {
 
@@ -25,6 +28,11 @@ public class PostService {
 
 
     public void addPost(Post post) {
+
+        Category category= categoryRepository.getCategoryByCategoryId(post.getCategory_id());
+        if(category==null){
+                throw new ApiException("The Category Not found");
+        }
 
         postRepository.save(post);
 
